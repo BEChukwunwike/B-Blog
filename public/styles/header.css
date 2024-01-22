@@ -3,7 +3,7 @@ img {
     height: 15%;
     margin-top: 0;
     margin-bottom: 0;
-    margin-left: 30px;
+    margin-left: 10%;
 }
 header {
     background-color: grey;
@@ -14,4 +14,11 @@ h3 {
     display: inline-block;
     font-size: 2rem;
     margin-left: 10px;
+}
+
+.nav-link {
+    display: inline-block;
+    margin-left: 40px;
+    font-size: 1.5rem;
+    color: black;
 }
