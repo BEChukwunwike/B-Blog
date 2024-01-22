@@ -1,0 +1,17 @@
+img {
+    width: 15%;
+    height: 15%;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 30px;
+}
+header {
+    background-color: grey;
+    display: inline-block;
+}
+
+h3 {
+    display: inline-block;
+    font-size: 2rem;
+    margin-left: 10px;
+}
