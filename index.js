@@ -1,6 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
-
+import fs from "fs"; // Node.js file system module
 
 const app = express();
 const port = 3000;
@@ -13,58 +13,46 @@ app.use(express.static('public'));
 // Use body-parser for form data handling
 app.use(bodyParser.urlencoded({ extended: true }));
 
-function generateUniqueId() {
-    return Math.random().toString(36).substring(2, 9); // Example implementation
-  }
+const posts = []; // Array to store posts
 
-// Route for homepage with dynamic post display
-app.get('/', async (req, res) => {
-  res.render('index');
+function generateUniqueId() {
+    return Math.random().toString(36).substring(2, 9);
+}
+
+app.get('/', (req, res) => {
+    res.render('index', { posts });
 });
 
 app.get('/create-post', (req, res) => {
-    res.render("create-post");
-})
-
-app.get('/contact', (req, res) => {
-    res.render("contact");
-})
-
-app.post('/create-post', async (req, res) => {
-  const { title, content } = req.body;
-
-  // ... validation (optional) ...
-
-  const newPost = {
-    id: generateUniqueId(),
-    title,
-    content,
-  };
-
-  let attempts = 0;
-  const maxAttempts = 3;
-
-  while (attempts < maxAttempts) {
-    try {
-      localStorage.setItem('myblog_post', JSON.stringify(newPost));
-      res.redirect('/'); // Successful post creation
-      break; // Exit the loop if successful
-    } catch (error) {
-      attempts++;
-      console.error(error);
-
-      if (attempts < maxAttempts) {
-        // Retry with a delay
-        await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait for 1 second
-      } else {
-        // Max attempts reached, send error message
-        res.status(500).send({ message: 'Failed to save post after multiple attempts. Please try again later.' });
-      }
-    }
-  }
+    res.render('create-post');
 });
+
+app.post('/create-post', (req, res) => {
+    const { title, content } = req.body;
+
+    // Validation (optional)
+
+    const newPost = {
+        id: generateUniqueId(),
+        title,
+        content,
+    };
+
+    posts.push(newPost);
+
+    // Save posts to a file (optional)
+    savePostsToFile(posts);
+
+    res.redirect('/');
+});
+
+// Function to save posts to a file (optional)
+function savePostsToFile(posts) {
+    const data = JSON.stringify(posts, null, 2);
+    fs.writeFileSync('posts.json', data, 'utf8');
+}
 
 // Start the server
 app.listen(port, () => {
-  console.log(`Server listening on port ${port}`);
+    console.log(`Server listening on port ${port}`);
 });
