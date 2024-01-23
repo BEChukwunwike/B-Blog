@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Me</title>
+</head>
+<body>
+    <%- include("partials/header.ejs") %>
+    <section class="container" id="Contact">
+        <div id="contact" class="bg-gradient-to-b from-black to-gray-800 text-white py-16">
+          <div class="max-w-screen-lg mx-auto px-4">
+            <div class="pb-8">
+              <h2 class="text-center">Contact</h2>
+              <p class="py-6">Submit the form below to get in touch with me</p>
+            </div>
+  
+            <form action="process-form.php" method="post" class="row">
+              <div>
+                <div class="mb-2">
+                  <label for="name" class="col-lg-1 col-md-2 col-sm-3">Name:</label>
+                  <input type="text" id="name" class=" active col-md-6 col-12 mx-auto" required>
+                </div>
+                <div class= "mb-2">
+                  <label for="email" class="col-lg-1 col-md-2 col-sm-3">Email:</label>
+                  <input type="email" id="email" name="email" class=" active col-md-6 col-12 mx-auto"required>
+                </div>
+                <div class="mb-2">
+                  <label for="message" class="col-lg-1 col-md-2 col-sm-3">Message:</label>
+                  <textarea id="message" name="message" rows="6" class="col-md-6 col-sm-6 col-12 mb-2 mx-auto active"></textarea>
+                </div>
+              </div>
+              
+              <button type="submit" class="active">Submit</button>
+          </form>
+            </section>
+</body>
+</html>

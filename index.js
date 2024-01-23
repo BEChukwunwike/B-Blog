@@ -19,41 +19,51 @@ function generateUniqueId() {
 
 // Route for homepage with dynamic post display
 app.get('/', async (req, res) => {
-
   res.render('index');
 });
 
-app.get('/create-post', (req, res) =>{
-    res.render('create-post');
+app.get('/create-post', (req, res) => {
+    res.render("create-post");
+})
+
+app.get('/contact', (req, res) => {
+    res.render("contact");
 })
 
 app.post('/create-post', async (req, res) => {
-    const { title, content } = req.body;
-  
-    // Validate input (optional)
-  
-    const newPost = {
-      id: generateUniqueId(), // Implement ID generation
-      title,
-      content,
-    };
-  
-    // Store the post in local storage
+  const { title, content } = req.body;
+
+  // ... validation (optional) ...
+
+  const newPost = {
+    id: generateUniqueId(),
+    title,
+    content,
+  };
+
+  let attempts = 0;
+  const maxAttempts = 3;
+
+  while (attempts < maxAttempts) {
     try {
-        localStorage.setItem('myblog_post', JSON.stringify(newPost));
-      
-        // Send response or redirect (update client-side)
-      
-        res.send({ message: 'Post created successfully!' }); // Or redirect to '/'
-        res.redirect('/'); // Successful post creation
+      localStorage.setItem('myblog_post', JSON.stringify(newPost));
+      res.redirect('/'); // Successful post creation
+      break; // Exit the loop if successful
     } catch (error) {
-        console.error(error); // Log the error
-        res.status(500).send({ message: 'Something went wrong. Please try again later.' }); // Send generic error message
+      attempts++;
+      console.error(error);
+
+      if (attempts < maxAttempts) {
+        // Retry with a delay
+        await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait for 1 second
+      } else {
+        // Max attempts reached, send error message
+        res.status(500).send({ message: 'Failed to save post after multiple attempts. Please try again later.' });
+      }
     }
-        console.error(error); // Log the error
-        res.status(500).send({ message: 'Something went wrong. Please try again later.' }); // Send generic error message
-  });
-  
+  }
+});
+
 // Start the server
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
