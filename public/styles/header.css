@@ -4,6 +4,7 @@ img {
     margin-top: 0;
     margin-bottom: 0;
     margin-left: 10%;
+    border-radius: 5%;
 }
 header {
     background-color: grey;
@@ -18,6 +19,10 @@ h3 {
 
 .nav-link {
     display: inline-block;
-    margin-left: 40px;
+    margin-right: 50px;
     font-size: 1.5rem;
+}
+
+nav {
+    margin: 50px;
 }
