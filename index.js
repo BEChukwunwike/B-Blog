@@ -27,6 +27,10 @@ app.get('/create-post', (req, res) => {
     res.render('create-post');
 });
 
+app.get("/contact", (req, res) => {
+    res.render("contact");
+})
+
 app.post('/create-post', (req, res) => {
     const { title, content } = req.body;
 
