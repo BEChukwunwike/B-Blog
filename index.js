@@ -13,31 +13,47 @@ app.use(express.static('public'));
 // Use body-parser for form data handling
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Route for homepage with dynamic post display
-app.get('/', (req, res) => {
-  // Check for post data received from the client (e.g., query parameter)
-  const postDataFromClient = req.query.postData;
-
-  // If no data received, render the index template without a post
-  if (!postDataFromClient) {
-    res.render('index');
-    return;
+function generateUniqueId() {
+    return Math.random().toString(36).substring(2, 9); // Example implementation
   }
 
-  // Parse the received data
-  const postData = JSON.parse(postDataFromClient);
+// Route for homepage with dynamic post display
+app.get('/', async (req, res) => {
 
-  // Dynamically generate HTML for the post
-  const postHtml = `
-    <h2>${postData.title}</h2>
-    <p>${postData.content}</p>
-    <hr>
-  `;
-
-  // Render the index template with the generated post HTML
-  res.render('index', { post: postHtml });
+  res.render('index');
 });
 
+app.get('/create-post', (req, res) =>{
+    res.render('create-post');
+})
+
+app.post('/create-post', async (req, res) => {
+    const { title, content } = req.body;
+  
+    // Validate input (optional)
+  
+    const newPost = {
+      id: generateUniqueId(), // Implement ID generation
+      title,
+      content,
+    };
+  
+    // Store the post in local storage
+    try {
+        localStorage.setItem('myblog_post', JSON.stringify(newPost));
+      
+        // Send response or redirect (update client-side)
+      
+        res.send({ message: 'Post created successfully!' }); // Or redirect to '/'
+        res.redirect('/'); // Successful post creation
+    } catch (error) {
+        console.error(error); // Log the error
+        res.status(500).send({ message: 'Something went wrong. Please try again later.' }); // Send generic error message
+    }
+        console.error(error); // Log the error
+        res.status(500).send({ message: 'Something went wrong. Please try again later.' }); // Send generic error message
+  });
+  
 // Start the server
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);

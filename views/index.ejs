@@ -7,16 +7,25 @@
 </head>
 <body>
     <%- include("partials/header.ejs") %>
-    <h1>Create New Post</h1>
-    <form action="/create-post" method="post">
-        <label for="title">Title:</label>
-        <input type="text" name="title" id="title" required>
-        <br>
-        <label for="content">Content:</label>
-        <textarea name="content" id="content" required></textarea>
-        <br>
-        <button type="submit">Create Post</button>
-    </form>
+    <h2>Latest Posts</h2>
+    <ul id="posts-list">
+  </ul>
+
+        <script>
+        const storedPost = JSON.parse(localStorage.getItem('myblog_post'));
+        if (storedPost) {
+            const postsList = document.getElementById('posts-list');
+            const listItem = document.createElement('li');
+            listItem.innerHTML = `
+            <h3><a href="post/${storedPost.id}">${storedPost.title}</a></h3>
+            <p>${storedPost.content}</p>
+            `;
+            postsList.appendChild(listItem);
+        } else {
+            const postsList = document.getElementById('posts-list');
+            postsList.innerHTML = '<p>No posts available yet.</p>';
+        }
+        </script>
     <%- include("partials/footer.ejs") %>
 </body>
 </html>
