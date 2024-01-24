@@ -4,22 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>create-post</title>
+    <link rel="stylesheet" href="/styles/main.css">
 </head>
 <body>
     <%- include("partials/header.ejs") %>
-    
     <div class="container">
-        <h2>Create New Post</h2>
+        <h2>Dear Writer,</h2>
+        <p class="custom-paragraph">In the boundless realm of your imagination lies a universe waiting to be unveiled, stories yearning to be told, and characters eager to breathe life onto the pages. Your pen, your words, these are the magical keys to unlock the doorways of countless worlds within you.</p>
+
+        <P class="custom-paragraph">Every writer stands at the threshold of creation, armed with the power to sculpt realities, evoke emotions, and inspire minds. The canvas before you is limitless, and the colors of your thoughts are the ink that paints the masterpiece of your narrative.</P>
+
+        <P class="custom-paragraph">Embrace the symphony of your ideas, let them dance across the paper like notes in a sonnet. Each word is a brushstroke, each sentence a stanza, and every paragraph a chapter in the grand saga of your creativity. Your thoughts, unique and irreplaceable, have the ability to resonate with hearts, transcend boundaries, and kindle the flame of inspiration in others.</P>
+
+        <p class="custom-paragraph">As you embark on this literary journey, remember that every word you write has the potential to shape worlds, challenge perceptions, and leave an indelible mark on the tapestry of human experience. Whether you're crafting tales of adventure, weaving threads of romance, or delving into the depths of the human psyche, your voice matters.</p>
+
+        <p class="custom-paragraph">In the quiet moments of doubt, when the blank page stares back at you, remember this: your words possess the power to heal, to uplift, and to ignite change. Let your pen be a beacon, cutting through the darkness of uncertainty, guiding not only your own path but also illuminating the way for others who seek solace in the sanctuary of your stories.</p>
+
+        <p class="custom-paragraph">So, dear writer, pick up your pen, let the ink flow, and watch as your thoughts transform into a literary masterpiece. The world awaits the magic only you can create, the stories only you can tell. Write with passion, write with purpose, and let your imagination soar to heights beyond your wildest dreams.</p>
+
+       <p class="custom-paragraph">Inscribe the chronicles of your soul, and may the symphony of your words resonate in the hearts of those who read them.</p>
+
+
+        <h2>Happy writing!</h2>
         <form action="/create-post" method="POST" class="mt-3">
             <div class="mb-3">
-                <label for="title" class="form-label">Title:</label>
+                <label for="title" class="form-label text-dark">Title:</label>
                 <input type="text" id="title" name="title" class="form-control" required>
             </div>
             <div class="mb-3">
-                <label for="content" class="form-control">Content:</label>
-                <textarea id="content" name="content" class="form-control" required></textarea>
+                <label for="content" class="form-label text-dark" >Content:</label>
+                <textarea id="content" name="content" class="form-control" rows="8"  required></textarea>
             </div>
-            <button type="submit" class="btn btn-secondary">Create Post</button>
+            <button type="submit" class="btn btn-dark">Create Post</button>
         </form>
     </div>
 

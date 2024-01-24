@@ -19,7 +19,19 @@ function generateUniqueId() {
     return Math.random().toString(36).substring(2, 9);
 }
 
+function readPostsFromFile() {
+    try {
+        const data = fs.readFileSync('posts.json', 'utf8');
+        return JSON.parse(data);
+    } catch (error) {
+        console.error("Error reading posts from file:", error);
+        return [];
+    }
+}
+
+
 app.get('/', (req, res) => {
+    const posts = readPostsFromFile();
     res.render('index', { posts });
 });
 
