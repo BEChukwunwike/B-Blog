@@ -1,10 +1,14 @@
 import express from "express";
 import bodyParser from "body-parser";
-import nodemailer from nodemailer
+import nodemailer from "nodemailer";
+import dotenv from 'dotenv';
 import fs from "fs"; // Node.js file system module
 
 const app = express();
 const port = 3000;
+
+// Load environment variables from .env file if it exists
+dotenv.config();
 
 app.set('view engine', 'ejs');
 
@@ -15,6 +19,15 @@ app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const posts = []; // Array to store posts
+
+// Configure nodemailer with your email service provider details
+const transporter = nodemailer.createTransport({
+    service: process.env.EMAIL_SERVICE,
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+    },
+});
 
 function generateUniqueId() {
     return Math.random().toString(36).substring(2, 9);
@@ -29,7 +42,6 @@ function readPostsFromFile() {
         return [];
     }
 }
-
 
 app.get('/', (req, res) => {
     const posts = readPostsFromFile();
@@ -85,6 +97,28 @@ app.post('/create-post', async (req, res) => {
                 res.status(500).send({ message: 'Failed to save post after multiple attempts. Please try again later.' });
             }
         }
+    }
+});
+
+app.post('/submit-contact', async (req, res) => {
+    const { name, email, message } = req.body;
+
+    // ... validation (optional) ...
+
+    const mailOptions = {
+        from: 'your_email@example.com',
+        to: process.env.EMAIL_USER, 
+        subject: 'New Contact Form Submission',
+        text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
+    };
+
+    try {
+        // Send the email
+        await transporter.sendMail(mailOptions);
+        res.redirect('/'); // Redirect to the home page after successful submission
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ message: 'Failed to send message. Please try again later.' });
     }
 });
 // Function to save posts to a file (optional)
