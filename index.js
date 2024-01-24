@@ -43,23 +43,48 @@ app.get("/contact", (req, res) => {
     res.render("contact");
 })
 
-app.post('/create-post', (req, res) => {
-    const { title, content } = req.body;
+// Route for handling post creation
+app.post('/create-post', async (req, res) => {
+    const { title, author, content } = req.body;
 
-    // Validation (optional)
+    // ... validation (optional) ...
 
     const newPost = {
         id: generateUniqueId(),
         title,
+        author,
         content,
     };
 
-    posts.push(newPost);
+    let attempts = 0;
+    const maxAttempts = 3;
 
-    // Save posts to a file (optional)
-    savePostsToFile(posts);
+    while (attempts < maxAttempts) {
+        try {
+            // Read existing posts from the JSON file
+            const existingPosts = readPostsFromFile();
 
-    res.redirect('/');
+            // Add the new post to the array
+            existingPosts.push(newPost);
+
+            // Write the updated array back to the JSON file
+            fs.writeFileSync('posts.json', JSON.stringify(existingPosts, null, 2), 'utf8');
+
+            res.redirect('/'); // Successful post creation
+            break; // Exit the loop if successful
+        } catch (error) {
+            attempts++;
+            console.error(error);
+
+            if (attempts < maxAttempts) {
+                // Retry with a delay
+                await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait for 1 second
+            } else {
+                // Max attempts reached, send error message
+                res.status(500).send({ message: 'Failed to save post after multiple attempts. Please try again later.' });
+            }
+        }
+    }
 });
 
 // Function to save posts to a file (optional)
