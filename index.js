@@ -63,7 +63,7 @@ app.post('/create-post', async (req, res) => {
         try {
             // Read existing posts from the JSON file
             const existingPosts = readPostsFromFile();
-
+            
             // Add the new post to the array
             existingPosts.push(newPost);
 
@@ -86,13 +86,11 @@ app.post('/create-post', async (req, res) => {
         }
     }
 });
-
 // Function to save posts to a file (optional)
 function savePostsToFile(posts) {
     const data = JSON.stringify(posts, null, 2);
     fs.writeFileSync('posts.json', data, 'utf8');
 }
-
 // Start the server
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
