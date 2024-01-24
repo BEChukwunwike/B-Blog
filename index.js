@@ -1,5 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
+import nodemailer from nodemailer
 import fs from "fs"; // Node.js file system module
 
 const app = express();
@@ -63,7 +64,7 @@ app.post('/create-post', async (req, res) => {
         try {
             // Read existing posts from the JSON file
             const existingPosts = readPostsFromFile();
-            
+
             // Add the new post to the array
             existingPosts.push(newPost);
 
