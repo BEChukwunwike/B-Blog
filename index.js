@@ -56,6 +56,35 @@ app.get("/contact", (req, res) => {
     res.render("contact");
 })
 
+app.get('/edit-post/:id', async (req, res) => {
+    const posts = await readPostsFromFile();
+    const post = posts.find(p => p.id === req.params.id);
+    if (!post) {
+      res.status(404).send('Post not found');
+      return;
+    }
+    res.render('edit-post', { post: post });
+  });
+
+  app.post('/update-post/:id', async (req, res) => {
+    try {
+        const posts = await readPostsFromFile();
+        const post = posts.find(p => p.id === req.params.id);
+        if (!post) {
+        res.status(404).send('Post not found');
+        return;
+        }
+        post.title = req.body.title;
+        post.content = req.body.content;
+        await writePostsToFile(posts);
+        res.redirect(`/post/${post.id}`); // Redirect to the updated post page
+    } catch (error) {
+        // Handle file writing errors
+        console.error(error);
+        res.status(500).send('Error updating post');
+    }
+  });  
+
 // Route for handling post creation
 app.post('/create-post', async (req, res) => {
     const { title, author, content } = req.body;
