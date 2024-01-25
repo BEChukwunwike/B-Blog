@@ -178,6 +178,20 @@ function savePostsToFile(posts) {
     const data = JSON.stringify(posts, null, 2);
     fs.writeFileSync('posts.json', data, 'utf8');
 }
+
+app.delete('/delete-post/:id', async (req, res) => {
+    try {
+      const posts = await fs.promises.readFile('posts.json', 'utf-8'); // Corrected typo here
+      const parsedPosts = JSON.parse(posts);
+      const filteredPosts = parsedPosts.filter(post => post.id !== req.params.id);
+      await fs.promises.writeFile('posts.json', JSON.stringify(filteredPosts)); // Corrected typo here
+      res.json({ success: true });
+    } catch (error) {
+      console.error('Error deleting post:', error);
+      res.status(500).json({ success: false, error: 'Failed to delete post' });
+    }
+  });
+  
 // Start the server
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
