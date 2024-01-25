@@ -15,10 +15,10 @@
             <% if (posts.length > 0) { %>
                 <% posts.forEach(post => { %>
                     <li>
-                        <h3><a class="text-dark" href="/edit-post/<%= post.id %>"><%= post.title %></a></h3>
-                        <p class="custom-paragraph"><%= post.content %></p>
+                        <h3><a class="text-dark mt-3" href="/edit-post/<%= post.id %>"><%= post.title %></a></h3>
+                        <p class="custom-paragraph my-3"><%= post.content %></p>
                         <p class="custom-paragraph" style="font-weight: bold;"><%= post.author %></p>
-                        <button class="delete-button" data-id="<%= post.id %>">Delete</button>
+                        <button class="delete-button btn btn-secondary mb-5" data-id="<%= post.id %>">Delete</button>
                     </li>
                 <% }); %>
             <% } else { %>
