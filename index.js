@@ -1,8 +1,11 @@
 import express from "express";
 import bodyParser from "body-parser";
 import nodemailer from "nodemailer";
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
+import session from "express-session"
+import expressFlash from "express-flash"
 import fs from "fs"; // Node.js file system module
+import flash from "express-flash";
 
 const app = express();
 const port = 3000;
@@ -15,6 +18,14 @@ app.set('view engine', 'ejs');
 // Configure static file serving
 app.use(express.static('public'));
 
+// Use session middleware for flash messages
+app.use(session({
+    secret: process.env.EMAIL_PASS, // Replace with a unique secret
+    resave: false,
+    saveUninitialized: true
+}));
+
+app.use(expressFlash());
 // Use body-parser for form data handling
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -43,6 +54,11 @@ function readPostsFromFile() {
     }
 }
 
+function writePostsToFile(posts) {
+    // Implement logic to write posts to a file
+    fs.writeFileSync('posts.json', JSON.stringify(posts, null, 2), 'utf8');
+}
+
 app.get('/', (req, res) => {
     const posts = readPostsFromFile();
     res.render('index', { posts });
@@ -65,25 +81,6 @@ app.get('/edit-post/:id', async (req, res) => {
     }
     res.render('edit-post', { post: post });
   });
-
-  app.post('/update-post/:id', async (req, res) => {
-    try {
-        const posts = await readPostsFromFile();
-        const post = posts.find(p => p.id === req.params.id);
-        if (!post) {
-        res.status(404).send('Post not found');
-        return;
-        }
-        post.title = req.body.title;
-        post.content = req.body.content;
-        await writePostsToFile(posts);
-        res.redirect(`/post/${post.id}`); // Redirect to the updated post page
-    } catch (error) {
-        // Handle file writing errors
-        console.error(error);
-        res.status(500).send('Error updating post');
-    }
-  });  
 
 // Route for handling post creation
 app.post('/create-post', async (req, res) => {
@@ -128,6 +125,32 @@ app.post('/create-post', async (req, res) => {
         }
     }
 });
+
+app.post('/update-post/:id', async (req, res) => {
+    try {
+      const posts = await readPostsFromFile();
+      const post = posts.find(p => p.id === req.params.id);
+  
+      if (!post) {
+        res.status(404).send('Post not found');
+        return;
+      }
+  
+      post.title = req.body.title;
+      post.content = req.body.content;
+  
+      await writePostsToFile(posts);
+  
+      // Set a success flash message (server-side)
+      req.flash('success', 'Post updated successfully!');
+  
+      // Redirect to the home page
+      res.redirect('/');
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Error updating post');
+    }
+  });  
 
 app.post('/submit-contact', async (req, res) => {
     const { name, email, message } = req.body;
