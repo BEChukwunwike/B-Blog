@@ -4,4 +4,8 @@
     text-align: left;
 }
   
-  
+.container-flex { /* Replace with your actual class or ID */
+    display: flex;                  /* Establish flex container */
+    flex-direction: column;         /* Stack items vertically */
+    min-height: 100vh;              /* Ensure full viewport height */
+  } 
