@@ -29,10 +29,10 @@ This is a basic version focused on core functionality. Additional features like 
 
 ## Technologies
 
-Node.js - Server-side JavaScript runtime environment.
-Express.js - Web application framework for Node.js.
-EJS - Templating engine for generating dynamic HTML content.
-Bootstrap - Responsive CSS framework for styling.
+*Node.js* - Server-side JavaScript runtime environment.
+*Express.js* - Web application framework for Node.js.
+*EJS* - Templating engine for generating dynamic HTML content.
+*Bootstrap* - Responsive CSS framework for styling.
 
 ## Contributing
 
