@@ -1,6 +1,8 @@
 
 # Scribbles: Node.js, Express.js, and EJS
 
+![Home Page](./public/README%20Img/home.png)
+
 ## Introduction
 
 This project creates a simple blog web application using Node.js, Express.js, and EJS. Users can create, view, edit, and delete blog posts on a stylish and responsive interface.
